@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -8,6 +9,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using RandomFact_Slack.Core.Services;
+using RandomFact_Slack.Infrastructure.Options;
+using RandomFact_Slack.Infrastructure.Service;
 using IHostingEnvironment = Microsoft.Extensions.Hosting.IHostingEnvironment;
 
 namespace RandomFact_Slack.Api
@@ -55,9 +58,13 @@ namespace RandomFact_Slack.Api
 
 
             //Options Files
+            services.AddSingleton<FactOptions, FactOptions>(serviceProvider => Configuration.GetSection(nameof(FactOptions)).Get<FactOptions>());
 
             //DI - Core
+            services.AddTransient<IFactService, FactService>();
+
             //DI - Infrastructure
+            services.AddScoped<IRandomFactApiService, RandomFactApiService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
