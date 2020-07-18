@@ -8,9 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 namespace RandomFact_Slack.Core.Authentication
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class ApiKeyAuthAttribute : Attribute, IAsyncActionFilter
+    public sealed class ApiKeyAuthAttribute : Attribute, IAsyncActionFilter
     {
         private const string ApiKeyHeaderName = "X-API-KEY";
+
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeaderName, out var potentialApiKey))

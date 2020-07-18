@@ -25,13 +25,13 @@ namespace RandomFact_Slack.Core.Services
         {
             var fact = await _randomFactApiService.GetFact();
 
-            if (string.IsNullOrEmpty(fact))
+            if (fact == null || string.IsNullOrEmpty(fact.Text))
             {
                 _logger.LogError("Fact result was empty");
                 throw new Exception("Oh no there was no fact");
             }
 
-            return fact;
+            return fact.Text;
         }
     }
 }

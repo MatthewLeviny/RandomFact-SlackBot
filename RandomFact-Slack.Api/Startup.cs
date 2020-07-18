@@ -66,7 +66,12 @@ namespace RandomFact_Slack.Api
                             "http://localhost*");
                     });
             });
-
+            services.AddHttpClient();
+            //http clients
+            services.AddHttpClient("FactApi", client =>
+            {
+                client.BaseAddress = new Uri("https://uselessfacts.jsph.pl");
+            });
 
             //Options Files
             services.AddSingleton<FactOptions, FactOptions>(serviceProvider => Configuration.GetSection(nameof(FactOptions)).Get<FactOptions>());
