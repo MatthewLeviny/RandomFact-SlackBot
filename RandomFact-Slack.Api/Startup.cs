@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -43,7 +44,17 @@ namespace RandomFact_Slack.Api
 
             services.AddResponseCompression(options => { options.Providers.Add<GzipCompressionProvider>(); });
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("v1", new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header, // where to find apiKey, probably in a header
+                    Name = "X-API-KEY", //header with api key
+                    Type = SecuritySchemeType.ApiKey // this value is always "apiKey"
+
+                });
+            });
+
             services.AddHealthChecks().AddCheck<HealthCheckService>("HealthCheckService");
 
             services.AddCors(options =>
@@ -51,8 +62,8 @@ namespace RandomFact_Slack.Api
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://example.com",
-                            "http://www.contoso.com");
+                        builder.WithOrigins("https://localhost*",
+                            "http://localhost*");
                     });
             });
 
@@ -91,7 +102,9 @@ namespace RandomFact_Slack.Api
             app.UseRouting();
             app.UseCors();
             app.UseResponseCompression();
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
