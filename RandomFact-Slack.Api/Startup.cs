@@ -66,7 +66,7 @@ namespace RandomFact_Slack.Api
                             "http://localhost*");
                     });
             });
-            services.AddHttpClient();
+
             //http clients
             services.AddHttpClient("FactApi", client =>
             {
