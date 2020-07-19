@@ -10,7 +10,7 @@ namespace RandomFact_Slack.Infrastructure.Service
 {
     public interface IRandomFactApiService
     {
-        Task<FactResponse> GetFact();
+        Task<FactResponse> GetFact(Language language);
     }
 
     public class RandomFactApiService : IRandomFactApiService
@@ -24,10 +24,10 @@ namespace RandomFact_Slack.Infrastructure.Service
             _httpClient = httpClient;
         }
 
-        public async Task<FactResponse> GetFact()
+        public async Task<FactResponse> GetFact(Language language)
         {
             using var httpClient = _httpClient.CreateClient("FactApi");
-            var response = await httpClient.GetAsync("/random.json?language=en");
+            var response = await httpClient.GetAsync($"/random.json?language={language}");
             if (response.IsSuccessStatusCode)
             {
                 return JsonConvert.DeserializeObject<FactResponse>(await response.Content.ReadAsStringAsync());

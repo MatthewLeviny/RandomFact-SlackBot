@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using RandomFact_Slack.Core.Dto;
 using RandomFact_Slack.Infrastructure.Service;
 
 namespace RandomFact_Slack.Core.Services
 {
     public interface IFactService
     {
-        Task<string> GetFact();
+        Task<string> GetFact(string tenant);
     }
 
     public class FactService : IFactService
@@ -21,9 +22,12 @@ namespace RandomFact_Slack.Core.Services
             _logger = logger;
         }
 
-        public async Task<string> GetFact()
+        public async Task<string> GetFact(string tenant)
         {
-            var fact = await _randomFactApiService.GetFact();
+            //convert Tenant to language
+            var language = TenantToLanguage(tenant);
+
+            var fact = await _randomFactApiService.GetFact(language);
 
             if (fact == null || string.IsNullOrEmpty(fact.Text))
             {
@@ -32,6 +36,19 @@ namespace RandomFact_Slack.Core.Services
             }
 
             return fact.Text;
+        }
+
+        private Language TenantToLanguage(string tenant)
+        {
+            switch (tenant)
+            {
+                case "de":
+                    return Language.de;
+                default:
+                    return Language.en;
+            }
+
+
         }
     }
 }

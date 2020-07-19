@@ -18,10 +18,10 @@ namespace RandomFact_Slack.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetFact()
+        public async Task<IActionResult> GetFact(string tenant)
         {
 
-            var result = await _factService.GetFact();
+            var result = await _factService.GetFact(tenant);
             return Ok(result);
         }
     }
