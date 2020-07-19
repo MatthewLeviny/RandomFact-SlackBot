@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RandomFact_Slack.Core.Authentication;
 using RandomFact_Slack.Core.Services;
@@ -10,7 +6,7 @@ using RandomFact_Slack.Core.Services;
 namespace RandomFact_Slack.Api.Controllers
 {
     [Route("{tenant}/[controller]/")]
-    [ApiKeyAuth]
+    [RequestAuth]
     [ApiController]
     public class FactController : ControllerBase
     {
@@ -21,7 +17,7 @@ namespace RandomFact_Slack.Api.Controllers
             _factService = factService;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> GetFact()
         {
 

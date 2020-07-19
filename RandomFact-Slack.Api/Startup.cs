@@ -102,6 +102,7 @@ namespace RandomFact_Slack.Api
                 c.RoutePrefix = string.Empty;
             });
 
+            //comment out if using ngrok
             app.UseHttpsRedirection();
 
             app.UseRouting();
