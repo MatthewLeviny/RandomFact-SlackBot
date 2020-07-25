@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RandomFact_Slack.Core;
 using RandomFact_Slack.Core.Authentication;
+using RandomFact_Slack.Core.Dto;
 using RandomFact_Slack.Core.Services;
 
 namespace RandomFact_Slack.Api.Controllers
@@ -20,9 +22,12 @@ namespace RandomFact_Slack.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> GetFact(string tenant)
         {
-
             var result = await _factService.GetFact(tenant);
-            return Ok(result);
+            return Ok(new SlackBasicResponseResponseDto
+            {
+                response_type = BasicResponseTypes.in_channel,
+                text = result
+            });
         }
     }
 }

@@ -16,8 +16,4 @@
     <ProjectReference Include="..\RandomFact-Slack.Infrastructure\RandomFact-Slack.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dto\" />
-  </ItemGroup>
-
 </Project>
